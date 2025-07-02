@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cuentas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .form-container,
+        .accounts-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            overflow-y: auto;
+        }
+
+        .accounts-container {
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background-color: #ffffff;
+            padding: 10px 0;
+            border-radius: 8px 8px 0 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            color: #555;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #4CAF50;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .delete-button {
+            background-color: red;
+            font-size: 13px;
+            padding: 10px 15px;
+           
+        }
+
+        .delete-button:hover {
+            background-color: rgb(148, 11, 11);
+        }
+
+        .copy-button {
+            background-color: #159e53;
+            padding: 10px 12px;
+            font-size: 13px;          
+        }
+
+        .copy-button:hover {
+            background-color: #0d6434;
+        }
+
+        .update-button {
+            background-color: #0b7dda;
+            padding: 10px 15px;
+            font-size: 13px;            
+           
+        }
+
+        .update-button:hover {
+            background-color: #075ca1;
+        }
+
+        .whatsapp-button {
+            background-color: #e9972d;
+            font-size: 13px;
+            padding: 10px 15px;
+          
+        }
+
+        .whatsapp-button:hover {
+            background-color: #bd7415;
+        }
+
+        .accounts-list {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .account-item {
+            color: #888;
+            background-color: #ffffff;
+            border: 1px solid #00d567;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            font-size: 13px;
+        }
+
+        .account-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .account-item strong {
+            font-size: 10px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .days-left {
+            font-size: 12px;
+            color: #c53939cf;
+            margin-top: 5px;
+        }
+
+        .descarga {
+            background-color: rgb(0, 140, 255);
+            margin: 10px auto;
+            width: 100%;
+        }
+
+        /* Estilos para pantallas pequeñas */
+        @media (min-width: 769px) {
+            .container {
+                flex-direction: row;
+                padding: 30px;
+            }
+
+            .form-container {
+                width: 45%;
+                max-height: 80vh;
+            }
+
+            .accounts-container {
+                width: 55%;
+                padding-left: 30px;
+                box-sizing: border-box;
+                max-height: 80vh;
+            }
+
+            .accounts-list {
+                margin-top: 55px;
+            }
+        }
+
+        .descarga {
+    background-color: rgb(0, 140, 255);
+    margin: 10px auto;
+    width: 100%;
+}
+
+/* Color diferente para el botón de importar */
+.descarga:nth-of-type(2) {
+    background-color: #4CAF50; 
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="form-container">
+            <h1>Agregar Cuentas Streaming</h1>
+
+            <form id="add-account-form">
+                <label for="service">Cliente:</label>
+                <input type="text" id="cliente" name="cliente" required placeholder="Nombre de cliente">
+                <label for="service">Servicio Streaming:</label>
+                <select id="service" name="service" required>
+                    <option value="">Selecciona Cuenta</option>
+                    <option value="Netflix">Netflix</option>
+                    <option value="Disney+">Disney+</option>
+                    <option value="Star+">Star+</option>
+                    <option value="Paramount+">Paramount+</option>
+                    <option value="Vix">Vix</option>
+                    <option value="Crunchyroll">Crunchyroll</option>
+                    <option value="Prime video">Prime video</option>
+                    <option value="YouTube premium">YouTube premium</option>
+                    <option value="Youtube Music">Youtube Music</option>
+                    <option value="Max">Max</option>
+                    <option value="Spotify">Spotify</option>
+                    <option value="Apple Music">Apple Music</option>
+                    <option value="Amazon Music">Amazon Music</option>
+                    <option value="OnlyFans">OnlyFans</option>
+                    <option value="Pornhub">Pornhub</option>
+                    <option value="Canva">Canva</option>
+                </select>
+
+                <label for="correo">Correo Electronico:</label>
+                <input type="email" id="correo" name="correo" required placeholder="Ingresa Email">
+
+                <label for="pass">Contraseña:</label>
+                <input type="text" id="pass" name="pass" required placeholder="Ingresa Contraseña">
+
+                <label for="purchase-date">Fecha de inicio:</label>
+                <input type="date" id="purchase-date" name="purchase-date" required>
+                <label for="expiry-date">Fecha de vencimiento:</label>
+                <input type="date" id="expiry-date" name="expiry-date" required>
+                <label for="contact-number">Número de contacto:</label>
+                <input type="text" id="contact-number" name="contact-number" placeholder="Ej. +5223456789" required>
+                <label for="perfil">Perfil:</label>
+                <input type="text" id="perfil" name="perfil" required placeholder="Ingrese Perfil">
+                <label for="pin">Pin:</label>
+                <input type="text" id="pin" name="pin" required placeholder="Ingrese Pin">
+                <label for="price">Lista de Precios (MXN):</label>
+                <input type="number" id="price" name="price" required placeholder="Ingrese Precio">
+                <button type="submit">Agregar Cuenta</button>
+            </form>
+            <button class="descarga" onclick="downloadAccounts()">Descargar Cuentas</button>
+            <!-- Dentro de .form-container, después del botón de descarga -->
+<button class="descarga" onclick="document.getElementById('fileInput').click()">Importar desde Excel</button>
+<input type="file" id="fileInput" accept=".xlsx, .xls" hidden>
+        </div>
+
+        <div class="accounts-container">
+            <h1>Cuentas Agregadas</h1>
+            <div class="accounts-list" id="accounts-list">
+                <!-- Aquí se mostrarán las cuentas -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script>
+        let accounts = [];
+
+        window.addEventListener('load', function () {
+            let storedAccounts = localStorage.getItem('accounts');
+            if (storedAccounts) {
+                accounts = JSON.parse(storedAccounts);
+                displayAccounts();
+            }
+        });
+
+        document.getElementById('add-account-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            let cliente = document.getElementById('cliente').value;
+            let service = document.getElementById('service').value;
+            let purchaseDate = document.getElementById('purchase-date').value;
+            let expiryDate = document.getElementById('expiry-date').value;
+            let contactNumber = document.getElementById('contact-number').value;
+            let perfil = document.getElementById('perfil').value;
+            let pin = document.getElementById('pin').value;
+            let price = document.getElementById('price').value;
+            let correo = document.getElementById('correo').value;
+            let pass = document.getElementById('pass').value;
+
+            addAccount(cliente, service, purchaseDate, expiryDate, contactNumber, perfil, pin, price, correo, pass);
+
+            this.reset();
+        });
+
+        // Función para importar datos desde Excel
+document.getElementById('fileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+        // Mapear datos del Excel al formato de cuenta
+        const importedAccounts = jsonData.map(item => ({
+            cliente: item['Cliente'] || '',
+            service: item['Servicio'] || '',
+            correo: item['Correo Electrónico'] || '',
+            pass: item['Contraseña'] || '',
+            purchaseDate: item['Fecha de Inicio'] || '',
+            expiryDate: item['Fecha de Vencimiento'] || '',
+            contactNumber: item['Número de Contacto'] || '',
+            perfil: item['Perfil'] || '',
+            pin: item['Pin'] || '',
+            price: item['Precio'] || ''
+        }));
+
+        // Fusionar con cuentas existentes y guardar
+        accounts = [...accounts, ...importedAccounts];
+        localStorage.setItem('accounts', JSON.stringify(accounts));
+        displayAccounts();
+        alert(`${importedAccounts.length} cuentas importadas con éxito!`);
+    };
+    reader.readAsArrayBuffer(file);
+});
+
+        function addAccount(cliente, service, purchaseDate, expiryDate, contactNumber, perfil, pin, price, correo, pass) {
+            let account = {
+                cliente: cliente,
+                service: service,
+                purchaseDate: purchaseDate,
+                expiryDate: expiryDate,
+                contactNumber: contactNumber,
+                perfil: perfil,
+                pin: pin,
+                price: price,
+                correo: correo,
+                pass: pass
+            };
+            accounts.push(account);
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            displayAccounts();
+        }
+
+        function deleteAccount(index) {
+            accounts.splice(index, 1);
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            displayAccounts();
+        }
+
+        function displayAccounts() {
+            let accountsList = document.getElementById('accounts-list');
+            accountsList.innerHTML = '';
+
+            accounts.forEach(function (account, index) {
+                let accountItem = document.createElement('div');
+                accountItem.classList.add('account-item');
+                let daysLeft = getDaysLeft(account.expiryDate);
+                let whatsappButtonHTML = '';
+                if (daysLeft <= 2) {
+                    whatsappButtonHTML = `<button class="whatsapp-button" onclick="sendWhatsApp(${index})">Notificar{⚠️}</button>`;
+                }
+                accountItem.innerHTML = `
+                    <strong>Nombre de cliente:</strong> ${account.cliente} <br>
+                    <strong>Servicio:</strong> ${account.service} <br>
+                    <strong>Correo:</strong> ${account.correo} <br>
+                    <strong>Contraseña:</strong> ${account.pass} <br>
+                    <strong>Perfil:</strong> ${account.perfil} <br>
+                    <strong>Pin:</strong> ${account.pin} <br>
+                    <strong>Fecha de inicio:</strong> ${account.purchaseDate} <br>
+                    <strong>Fecha de vencimiento:</strong> ${account.expiryDate} <br>
+                    <strong>Número de contacto:</strong> ${account.contactNumber} <br>
+                    <strong>Precio:</strong> $${account.price} <br>
+                    <button class="copy-button" onclick="sendAccount(${index})">Enviar {✉️}</button>
+                    <button class="copy-button" onclick="copyAccount(${index})">Copiar {📝}</button>
+                    <button class="update-button" onclick="updateAccount(${index})">Actualizar {♻️}</button>
+                    <button class="delete-button" onclick="deleteAccount(${index})">Eliminar {⛔}</button>
+                    ${whatsappButtonHTML}
+                    <div class="days-left">Días restantes: ${daysLeft}</div>
+                `;
+                accountsList.appendChild(accountItem);
+            });
+        }
+
+        function getDaysLeft(expiryDate) {
+            let today = new Date();
+            let expiration = new Date(expiryDate);
+            let timeDiff = expiration.getTime() - today.getTime();
+            let daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            return daysDiff;
+        }
+
+        function copyAccount(index) {
+            let account = accounts[index];
+            let daysLeft = getDaysLeft(account.expiryDate);
+
+
+            let copyText = `
+> ✅ *${account.service}* ✅
+> 👤 *Cliente:* _${account.cliente}_
+> 📩 *Correo:* ${account.correo}
+> 🔐 *Contraseña:* _${account.pass}_
+> 👤 *Perfil:* _${account.perfil}_
+> 🔑 *Pin:* _${account.pin}_
+> ✅ *Inicio:* _${account.purchaseDate}_
+> ❌ *Vence:* _${account.expiryDate}_
+> #️⃣ *N° cliente:* _${account.contactNumber}_
+> 💵 *Precio:* _$${account.price}_
+> 📆 *Días restantes:* _${daysLeft}_
+
+> ❌ _*No modifique datos ni contraseña para conservar la Garantía.*_
+> ❌ _*No añadir # telefónico.*_
+> ❌ _*No Suscripción a canales de ningun tipo o perderas garantía total sin excepción alguna.*_
+
+-------------------------------------
+> _*Métodos de pago 💵💲💰*_
+> *LEER Y ESCRIBIR BIEN*
+> _Deposito por OXXO:_
+> *2242 1700 1001 8022*
+> _Transferencia interbancaria:_
+> _Clabe:_
+> *728969000032102276*
+> _Nombre:_ *Raúl Ruiz*
+> _Banco:_ *Spin by OXXO*
+> _Concepto:_ *Prestamo*
+> _Cantidad:_ *$${account.price}*
+
+> _Para cualquier duda o aclaración, puedes contactarme a través de WhatsApp haciendo clic en el siguiente enlace:_
+> https://api.whatsapp.com/send?phone=5214494516970
+
+> _*@SoyRaulRuizOficial*_`;
+
+
+            navigator.clipboard.writeText(copyText).then(function () {
+                alert('La cuenta ha sido copiada al portapapeles.');
+            }, function (err) {
+                console.error('No se pudo copiar la cuenta: ', err);
+            });
+        }
+        function deleteAccount(index) {
+            let confirmDelete = confirm("¿Estás seguro de que deseas eliminar esta cuenta?");
+            if (confirmDelete) {
+                accounts.splice(index, 1);
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                displayAccounts();
+            }
+        }
+
+        function updateAccount(index) {
+            let account = accounts[index];
+            let cliente = prompt('Ingrese el nuevo nombre de cliente:', account.cliente);
+            let service = prompt('Ingrese el nuevo servicio:', account.service);
+            let correo = prompt('Ingrese el nuevo correo:', account.correo);
+            let pass = prompt('Ingrese la nueva contraseña:', account.pass);
+            let purchaseDate = prompt('Ingrese la nueva fecha de inicio:', account.purchaseDate);
+            let expiryDate = prompt('Ingrese la nueva fecha de vencimiento:', account.expiryDate);
+            let contactNumber = prompt('Ingrese el nuevo número de contacto:', account.contactNumber);
+            let perfil = prompt('Ingrese el nuevo perfil:', account.perfil);
+            let pin = prompt('Ingrese el nuevo pin:', account.pin);
+            let price = prompt('Ingrese el nuevo precio:', account.price);
+
+            // Si el usuario cancela, no se realiza la actualización
+            if (cliente === null || service === null || correo === null || pass === null || purchaseDate === null || expiryDate === null || contactNumber === null || perfil === null || pin === null || price === null) {
+                return;
+            }
+
+            // Actualizar la cuenta en el array
+            accounts[index] = {
+                cliente: cliente,
+                service: service,
+                correo: correo,
+                pass: pass,
+                purchaseDate: purchaseDate,
+                expiryDate: expiryDate,
+                contactNumber: contactNumber,
+                perfil: perfil,
+                pin: pin,
+                price: price
+            };
+
+            // Guardar en localStorage y actualizar la vista
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            displayAccounts();
+        }
+
+
+
+        function sendWhatsApp(index) {
+            let account = accounts[index];
+            let message = 
+`
+> Hola _*${account.cliente}👤☺️:*_
+> Esperamos que estes disfrutando
+> de tu suscripción a _*${account.service}*_.
+> Nos dirigimos a ti para recordarte
+> que tu suscripción está próxima
+> a vencer o ya venció.
+> Para evitar la interrupción
+> del servicio y seguir disfrutando
+> de todos los beneficios que ofrecemos,
+> te invitamos a renovar tu suscripción.
+
+> _*🖥️ Servicio: ${account.service}*_
+> _*✅ Inicio: ${account.purchaseDate}*_
+> _*❌ Vence: ${account.expiryDate}*_
+> _*💵 Pago: $${account.price}*_
+
+> Si desea proceder con la renovación, 
+> por favor, realiza el pago correspondiente.
+
+-------------------------------------
+> _*Métodos de pago 💵💲💰*_
+> *LEER Y ESCRIBIR BIEN*
+> _Deposito por OXXO:_
+> *2242 1700 1001 8022*
+> _Transferencia interbancaria:_
+> _Clabe:_
+> *728969000032102276*
+> _Nombre:_ *Raúl Ruiz*
+> _Banco:_ *Spin by OXXO*
+> _Concepto:_ *Prestamo*
+> _Cantidad:_ *$${account.price}*
+
+> _Para cualquier duda o aclaración, puedes contactarme a través de WhatsApp haciendo clic en el siguiente enlace:_
+> https://api.whatsapp.com/send?phone=5214494516970
+
+> _*@SoyRaulRuizOficial*_`;
+;
+            let whatsappUrl = `https://api.whatsapp.com/send?phone=${account.contactNumber}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function sendAccount(index) {
+            let account = accounts[index];
+            let daysLeft = getDaysLeft(account.expiryDate);
+            let message = `
+> ✅ *${account.service}* ✅
+> 👤 *Cliente:* _${account.cliente}_
+> 📩 *Correo:* ${account.correo}
+> 🔐 *Contraseña:* _${account.pass}_
+> 👤 *Perfil:* _${account.perfil}_
+> 🔑 *Pin:* _${account.pin}_
+> ✅ *Inicio:* _${account.purchaseDate}_
+> ❌ *Vence:* _${account.expiryDate}_
+> #️⃣ *N° cliente:* _${account.contactNumber}_
+> 💵 *Precio:* _$${account.price}_
+> 📆 *Días restantes:* _${daysLeft}_
+-------------------------------------
+> _*Métodos de pago 💵💲💰*_
+> *LEER Y ESCRIBIR BIEN*
+> _Deposito por OXXO:_
+> *2242 1700 1001 8022*
+> _Transferencia interbancaria:_
+> _Clabe:_
+> *728969000032102276*
+> _Nombre:_ *Raúl Ruiz*
+> _Banco:_ *Spin by OXXO*
+> _Concepto:_ *Prestamo*
+> _Cantidad:_ *$${account.price}*
+
+> _Para cualquier duda o aclaración, puedes contactarme a través de WhatsApp haciendo clic en el siguiente enlace:_
+> https://api.whatsapp.com/send?phone=5214494516970
+
+> _*@SoyRaulRuizOficial*_`;
+            let whatsappUrl = `https://api.whatsapp.com/send?phone=${account.contactNumber}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+
+
+        function downloadAccounts() {
+            // Crear una estructura de datos compatible con xlsx
+            let data = accounts.map(account => ({
+                'Cliente': account.cliente,
+                'Servicio': account.service,
+                'Correo Electrónico': account.correo,
+                'Contraseña': account.pass,
+                'Fecha de Inicio': account.purchaseDate,
+                'Fecha de Vencimiento': account.expiryDate,
+                'Número de Contacto': account.contactNumber,
+                'Perfil': account.perfil,
+                'Pin': account.pin,
+                'Precio': account.price
+            }));
+
+            // Convertir los datos a un libro de Excel
+            let workbook = XLSX.utils.book_new();
+            let worksheet = XLSX.utils.json_to_sheet(data);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Cuentas');
+
+            // Generar el archivo binario de Excel
+            let excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+            // Guardar y descargar el archivo
+            let blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+            saveAs(blob, 'cuentas.xlsx');
+        }
+    </script>
+</body>
+
+</html>
